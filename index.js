@@ -43,6 +43,19 @@ app.get("/studios", async(req, res) => {
      }
 })
 
+app.get("/studios/:id", async(req, res) => {
+     try{
+          const id = req?.params?.id;
+          const query = { _id: new ObjectId(id) };
+          const result = await studiosCollection.findOne(query);
+
+          res.status(200).json(result);
+     }catch(err) {
+          console.error("Studio error:", err);
+          res.status(500).json({ error: "Failed to fetch studios" })
+     }
+})
+
 app.post("/studios", async(req, res) => {
      try{
           const studio = req?.body;
@@ -65,7 +78,7 @@ app.patch("/studio/:id", async(req, res) => {
           };
           const options = { upsert: true };
           const result = await studiosCollection.updateOne(query, updatedStudio, options);
-          console.log(studio, result);
+          // console.log(studio, result);
           
           res.status(200).json(result);
      }catch(err) {
