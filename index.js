@@ -32,7 +32,11 @@ const studiosCollection = db.collection("studios");
 // studios related API
 app.get("/all-studios", async(req, res) => {
      try{
-          const result = await studiosCollection.find({}).toArray();
+          const category = req?.query?.category;
+          const query = category ? { category } : {};
+          
+          const result = await studiosCollection.find(query).toArray();
+          // console.log(category, result);
           res.status(200).json(result);
      }catch(err) {
           console.error("Studio error:", err);
