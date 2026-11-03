@@ -30,6 +30,16 @@ const userCollection = db.collection("user");
 const studiosCollection = db.collection("studios");
 
 // studios related API
+app.get("/all-studios", async(req, res) => {
+     try{
+          const result = await studiosCollection.find({}).toArray();
+          res.status(200).json(result);
+     }catch(err) {
+          console.error("Studio error:", err);
+          res.status(500).json({ error: "Failed to fetch stuidos" })
+     }
+})
+
 app.get("/studios", async(req, res) => {
      try{
           const email = req?.query?.email;
