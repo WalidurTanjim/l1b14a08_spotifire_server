@@ -101,6 +101,18 @@ app.patch("/studio/:id", async(req, res) => {
      }
 })
 
+app.delete("/studios/:id", async(req, res) => {
+     try{
+          const id = req?.params?.id;
+          const query = { _id: new ObjectId(id) };
+          const result = await studiosCollection.deleteOne(query);
+          res.status(200).json(result);
+     }catch(err) {
+          console.error("Delete studio error:", err);
+          res.status(500).json({ error: "Failed to delete studio" })
+     }
+})
+
 app.listen(PORT, () => {
      console.log(`Server is running on the port: ${PORT}`);
 });
