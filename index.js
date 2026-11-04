@@ -28,6 +28,7 @@ const dbClient = await connectToMongoDB();
 const db = dbClient.db("Spotifire");
 const userCollection = db.collection("user");
 const studiosCollection = db.collection("studios");
+const bookingStudiosCollection = db.collection("bookingStudio");
 
 // studios related API
 app.get("/all-studios", async(req, res) => {
@@ -41,6 +42,16 @@ app.get("/all-studios", async(req, res) => {
      }catch(err) {
           console.error("Studio error:", err);
           res.status(500).json({ error: "Failed to fetch stuidos" })
+     }
+})
+
+app.get("/featured-studios", async(req, res) => {
+     try{
+          const result = await studiosCollection.find({}).sort({ createdAt: -1 }).limit(6).toArray();
+          res.status(200).json(result);
+     }catch(err) {
+          console.error("Studio error:", err);
+          res.status(500).json({ error: "Failed to fetch studios" })
      }
 })
 
@@ -81,6 +92,8 @@ app.post("/studios", async(req, res) => {
           res.status(500).json({ error: "Failed to create studio" })
      }
 })
+
+
 
 app.patch("/studio/:id", async(req, res) => {
      try{
